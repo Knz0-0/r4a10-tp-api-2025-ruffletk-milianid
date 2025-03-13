@@ -1,168 +1,93 @@
-/* Importation de la police Roboto */
-@import url(https://fonts.googleapis.com/css?family=Roboto);
-
-/* Définition des principales couleurs */
-:root {
-  --text-color: #fafafa; /* (Texte presque blanc) */
-  --background: #34495e; /* (Fond bleu foncé) */
-  --background-button: #bebebe;
-  --main-green: rgb(26, 188, 156);
-  --active-green: rgb(20, 156, 128);
-  --almost-black: #2d2d2d;
-}
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 
 * {
-  color: var(--text-color);
+  font-family: "Roboto";
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  background-color: var(--background);
-  font: 14pt Roboto, Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  width: 90%;
-  margin: 40px auto;
-}
 
-/* Paragraphes "Aucun résultat..." et "Aucune recherche..." */
-p.info-vide {
-  font-style: italic;
-}
+  background-image: url("images/bg.png");
+  background-size: cover;
+  background-repeat: no-repeat;
 
-/* Partie En-tête */
-h1 {
+  background-color: #070f2b;
+  font-family: Arial, sans-serif;
   text-align: center;
-  font-variant: small-caps;
-  font-size: 2.5em;
-  color: var(--main-green);
-}
+  margin: 50px;
 
-#explication {
-  font-size: 1.2em;
-}
-
-/* Conteneur principal */
-#conteneur {
   display: flex;
-  flex: 1;
-  margin: 30px auto;
+  flex-direction: column;
+
 }
 
-/* Section Recherche (avec résultats) */
-#section-recherche {
-  margin-top: 0;
-  flex: 1 1 auto;
-}
-
-#bloc-recherche {
+.searchbar {
   display: flex;
-  margin: 0 auto;
-  min-width: 450px;
   flex-direction: row;
+  justify-content: space-between;
+  margin: 100px;
+  justify-self: center;
+  align-self: center;
+
+  padding: 10px;
+
+  background-color: aliceblue;
+  border-radius: 25px;
+  width: 400px;
 }
 
-#bloc-recherche > input[type="text"],
-#bloc-recherche > button {
-  display: block;
-  font-size: 1.2em;
+input {
+  border: none;
+  padding: 10px;
+  font-size: 16px;
+  background-color: transparent;
 }
 
-#bloc-recherche > input[type="text"] {
-  color: var(--almost-black);
-  flex: 1;
-  padding: 0.7em;
-  border: 0.3em solid var(--main-green);
+.searchbar button {
+  background-color: transparent;
 }
 
-#bloc-recherche > button {
-  padding: 0.8em 0.8em;
-  /* Bordure invisible pour que le hover ne bouge pas le bouton */
-  border: 1px solid var(--main-green);
 
-  /* Par défaut, les boutons sont en gris
-	 (S'ils sont "clicables", ils passent en vert) */
-  background-color: var(--background-button);
+h1 {
+  font-size: 50px;
+  color: aliceblue;
 }
 
-/* Apparences des boutons clicables */
-#bloc-recherche > button.btn_clicable {
-  background-color: var(--main-green);
-}
-
-#bloc-recherche > button:focus {
-  /* Pour éviter un affichage disgracieux
-		quand le bouton reste en focus */
-  outline: 0 !important;
-}
-
-#bloc-recherche > button.btn_clicable:hover {
-  cursor: pointer;
-  border: 1px solid white;
-}
-
-#bloc-recherche > button.btn_clicable:active {
-  background-color: var(--active-green);
-}
-
-/* GIF de chargement (caché par défaut) */
-#bloc-gif-attente {
-  display: none;
-  margin: 40px;
-  text-align: center;
-}
-
-#bloc-resultats p.res::before {
-  /* Affichage d'une flèche devant chaque résultat
-		(Cf. https://unicode-table.com/fr/21E8/ ) */
-  content: "\21E8\00A0";
-}
-
-/* Section de la barre de séparation */
-#section-separation {
-  border-left: 2px dashed var(--main-green);
-  margin: 0 20px;
-}
-
-/* Section des recherches favorites */
-#section-favoris {
-  flex: 0 0 300px;
-  margin-top: 0;
-  margin-bottom: 20px;
-}
-
-#section-favoris h2 {
-  margin-top: 0;
-}
-
-#section-favoris p {
-  margin-bottom: 8px;
-}
-
-#liste-favoris li {
-  margin-bottom: 8px;
+button {
+  border: none;
+  background-color: aliceblue;
+  padding: 10px;
+  font-size: 16px;
   cursor: pointer;
 }
 
-#liste-favoris li span {
-  text-decoration: underline;
+#result {
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: aliceblue;
+
+  align-self: center;
+  width: 300px;
+  height: 350px;
+  border: solid #dcdbfc 4px;
+  border-radius: 21px;
+  background-color: #dcdfec2a;
+  backdrop-filter: blur(7px);
+  margin-top: 20px;
+  font-size: 18px;
 }
 
-#liste-favoris li span:hover {
-  color: var(--main-green);
+#result i {
+  font-size: 30px;
 }
 
-/* Media-query pour gérer l'affichage sur petit écran */
-@media (max-width: 900px) {
-  #conteneur {
-    flex-direction: column-reverse;
-  }
+#result .temperature {
+  font-size: 90px;
+}
 
-  #section-separation {
-    border-top: 2px dashed var(--main-green);
-    margin: 0 -10px 40px -10px;
-  }
-
-  #section-favoris {
-    flex: 0;
-  }
+#result .ville {
+  font-size: 20px;
 }

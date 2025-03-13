@@ -5,64 +5,34 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Météo</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      margin: 50px;
-    }
-
-    input {
-      padding: 10px;
-      font-size: 16px;
-    }
-
-    button {
-      padding: 10px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    #result {
-      margin-top: 20px;
-      font-size: 18px;
-    }
-  </style>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://kit.fontawesome.com/398f5241ae.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
-  <h1>Rechercher une ville</h1>
-  <input type="text" id="city" placeholder="Entrez une ville">
-  <button onclick="getWeather()">Rechercher</button>
-  <div id="result"></div>
+  <h1>Découvrez la météo dans la ville de votre choix</h1>
 
-  <script>
-    async function getWeather() {
-      const city = document.getElementById('city').value;
-      if (!city) return alert("Entre un nom de ville !");
+  <div class="searchbar">
+    <input type="text" id="city" placeholder="Entrez une ville">
 
-      try {
-        // Géocodage pour récupérer lat/lon
-        const geoRes = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${city}&count=1&language=fr&format=json`);
-        const geoData = await geoRes.json();
-        if (!geoData.results) throw new Error("Ville introuvable");
+    <button onclick="getWeather()">
+      <i class="fa-solid fa-magnifying-glass"></i>
+    </button>
+  </div>
 
-        const { latitude, longitude } = geoData.results[0];
 
-        // Récupérer la météo
-        const meteoRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,wind_speed_10m&timezone=Europe%2FParis`);
-        const meteoData = await meteoRes.json();
 
-        // Affichage
-        document.getElementById('result').innerHTML = `
-                    <p><strong>Température:</strong> ${meteoData.current.temperature_2m}°C</p>
-                    <p><strong>Vent:</strong> ${meteoData.current.wind_speed_10m} km/h</p>
-                `;
-      } catch (error) {
-        document.getElementById('result').innerHTML = "Erreur: " + error.message;
-      }
-    }
-  </script>
+
+  <div id="result">
+
+    <i class="fa-solid fa-wind"></i>
+    <div class="temperature">10°C</div>
+
+    <div class="ville">Grenoble, France</div>
+
+  </div>
+
+  <script src="script.js"></script>
 </body>
 
 </html>

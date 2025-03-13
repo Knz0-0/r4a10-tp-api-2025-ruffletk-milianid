@@ -1,118 +1,68 @@
 <!DOCTYPE html>
-<html lang="fr" dir="ltr">
-  <head>
-    <title>Recherche d'offres d'emploi</title>
-    <meta charset="utf-8" />
-    <link rel="shortcut icon" type="image/x-icon" href="favicon-js.ico" />
-    <link rel="stylesheet" href="styles.css" />
-  </head>
+<html lang="fr">
 
-  <body>
-    <header>
-      <h1>Recherche d'offres d'emploi</h1>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Météo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 50px;
+    }
 
-      <p id="explication">
-        Cette page permet de rechercher des offres d'emploi via l'API publique
-        de <a href="https://www.indeed.fr/" target="_blank">indeed.fr</a>.<br />
-        Saisir le nom d'une ville, d'un poste, ... pour rechercher les postes
-        correspondants, et enregistrer vos recherches favorites pour les
-        retrouver facilement.
-      </p>
-    </header>
-    <hr />
+    input {
+      padding: 10px;
+      font-size: 16px;
+    }
 
-    <main id="conteneur">
-      <!-- Section de recherche (avec résultats) -->
-      <section id="section-recherche">
-        <div id="bloc-recherche">
-          <!-- Champ de recherche -->
-          <input type="text" placeholder="Que cherchez-vous ?" />
+    button {
+      padding: 10px;
+      font-size: 16px;
+      cursor: pointer;
+    }
 
-          <!-- Boutons -->
-          <button
-            id="btn-lancer-recherche"
-            type="button"
-            class="btn_clicable"
-            title="Lancer la recherche"
-          >
-            <!-- Icone Loupe (provenant de flaticon.com) -->
-            <img src="images/loupe.svg" alt="Loupe pour recherche" width="22" />
-          </button>
+    #result {
+      margin-top: 20px;
+      font-size: 18px;
+    }
+  </style>
+</head>
 
-          <button
-            id="btn-favoris"
-            type="button"
-            disabled
-            title="Ajouter la recherche aux favoris"
-          >
-            <!-- Icone étoile vide
-							(qui indique que la recherche ne fait pas partie des favoris) -->
-            <img src="images/etoile-vide.svg" alt="Etoile vide" width="22" />
+<body>
+  <h1>Rechercher une ville</h1>
+  <input type="text" id="city" placeholder="Entrez une ville">
+  <button onclick="getWeather()">Rechercher</button>
+  <div id="result"></div>
 
-            <!-- Icone étoile pleine
-								(qui indique que la recherche fait partie des favoris) -->
-            <!-- <img src="images/etoile-pleine.svg" alt="Etoile pleine" width="22" > -->
+  <script>
+    async function getWeather() {
+      const city = document.getElementById('city').value;
+      if (!city) return alert("Entre un nom de ville !");
 
-            <!-- (Les 2 icones d'étoile provenant de flaticon.com) -->
-          </button>
-        </div>
+      try {
+        // Géocodage pour récupérer lat/lon
+        const geoRes = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${city}&count=1&language=fr&format=json`);
+        const geoData = await geoRes.json();
+        if (!geoData.results) throw new Error("Ville introuvable");
 
-        <!-- Résultats de recherche -->
-        <div id="bloc-gif-attente">
-          <img
-            src="images/attente-ajax.gif"
-            alt="GIF Attente de résultats"
-            width="50"
-          />
-        </div>
-        <div id="bloc-resultats">
-          <p class="res">Résultat 1 ...</p>
-          <p class="res">Résultat 2 ...</p>
-          <p class="res">Résultat 3 ...</p>
-          <p class="info-vide">(Aucun résultat trouvé)</p>
-        </div>
-      </section>
+        const { latitude, longitude } = geoData.results[0];
 
-      <!-- Section de séparation (avec la bordure verte) -->
-      <section id="section-separation"></section>
+        // Récupérer la météo
+        const meteoRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,wind_speed_10m&timezone=Europe%2FParis`);
+        const meteoData = await meteoRes.json();
 
-      <!-- Section des recherches favorites -->
-      <section id="section-favoris">
-        <h2>Recherches favorites</h2>
-        <p>
-          Cliquer sur une recherche favorite ci-dessus pour relancer celle-ci :
-        </p>
-        <ul id="liste-favoris">
-          <li>
-            <span title="Cliquer pour relancer la recherche">Grenoble</span>
-            <img
-              src="images/croix.svg"
-              alt="Icone pour supprimer le favori"
-              width="15"
-              title="Cliquer pour supprimer le favori"
-            />
-          </li>
-          <li>
-            <span title="Cliquer pour relancer la recherche">Lyon</span>
-            <img
-              src="images/croix.svg"
-              alt="Icone pour supprimer le favori"
-              width="15"
-              title="Cliquer pour supprimer le favori"
-            />
-          </li>
-          <li>
-            <span title="Cliquer pour relancer la recherhe.">Web</span>
-            <img
-              src="images/croix.svg"
-              alt="Icone pour supprimer le favori"
-              width="15"
-              title="Cliquer pour supprimer le favori"
-            />
-          </li>
-        </ul>
-        <p class="info-vide">(Aucune recherche favorite)</p>
-      </section>
-    </main>
-  </body>
+        // Affichage
+        document.getElementById('result').innerHTML = `
+                    <p><strong>Température:</strong> ${meteoData.current.temperature_2m}°C</p>
+                    <p><strong>Vent:</strong> ${meteoData.current.wind_speed_10m} km/h</p>
+                `;
+      } catch (error) {
+        document.getElementById('result').innerHTML = "Erreur: " + error.message;
+      }
+    }
+  </script>
+</body>
+
 </html>

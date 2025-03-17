@@ -42,6 +42,8 @@ async function meteo() {
 
         document.getElementById("weatherResult").innerHTML = weatherHTML;
 
+        document.getElementById("suggestionsList").innerHTML = '';
+
     } catch (error) {
         console.error("Erreur :", error);
         document.getElementById("weatherResult").innerHTML = "❌ Erreur lors de la récupération des données.";

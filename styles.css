@@ -22,49 +22,93 @@ body {
 
 }
 
+
+.searchZone {
+  display: flex;
+  flex-direction: column;
+  margin: 100px;
+  padding: 0px 10px 0px 10px;
+  background-color: aliceblue;
+  border-radius: 25px;
+  width: 400px;
+  align-self: center;
+}
+
+
+.fa-search {
+  padding: 10px;
+  margin: 0;
+  border-radius: 10px;
+}
+
+.fa-search:hover {
+  background-color: #dcdbfc;
+}
+
 .searchbar {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin: 100px;
+
   justify-self: center;
   align-self: center;
-
+  border-radius: 25px;
   padding: 10px;
 
   background-color: aliceblue;
-  border-radius: 25px;
+
   width: 400px;
 }
 
-.suggestionList {
+
+
+#suggestionsList {
+  display: inline;
+  list-style-type: none;
+  align-self: center;
   background-color: aliceblue;
+  width: 400px;
+  padding: 10px;
+  border-radius: 25px;
+}
+
+#suggestionsList li {
+  padding: 5px;
+}
+
+#suggestionsList li:hover {
+  background-color: #dcdbfc;
+  cursor: pointer;
 }
 
 
-input {
+
+#suggestionsList li:last-child {
+  border-radius: 0px 0px 20px 20px;
+}
+
+
+.searchbar input {
   border: none;
   padding: 10px;
   font-size: 16px;
   background-color: transparent;
+  width: 300px;
 }
 
 .searchbar button {
   background-color: transparent;
+  border: none;
+  background-color: aliceblue;
+  padding: 0px;
+  font-size: 16px;
+  cursor: pointer;
 }
 
 
 h1 {
   font-size: 50px;
   color: aliceblue;
-}
-
-button {
-  border: none;
-  background-color: aliceblue;
-  padding: 10px;
-  font-size: 16px;
-  cursor: pointer;
 }
 
 #weatherResult {

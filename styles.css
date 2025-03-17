@@ -37,6 +37,11 @@ body {
   width: 400px;
 }
 
+.suggestionList {
+  background-color: aliceblue;
+}
+
+
 input {
   border: none;
   padding: 10px;
@@ -62,7 +67,7 @@ button {
   cursor: pointer;
 }
 
-#result {
+#weatherResult {
 
   display: flex;
   flex-direction: column;
@@ -80,14 +85,19 @@ button {
   font-size: 18px;
 }
 
-#result i {
+#weatherResult #icon {
   font-size: 30px;
 }
 
-#result .temperature {
+#weatherResult #temperature {
   font-size: 90px;
 }
 
-#result .ville {
+#weatherResult #ville {
   font-size: 20px;
+}
+
+#message {
+  color: aliceblue;
+  font-size: large;
 }

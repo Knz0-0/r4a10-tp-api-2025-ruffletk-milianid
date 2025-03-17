@@ -9,7 +9,7 @@
 <body>
     <div class="container">
         <h2>🌤 Météo en temps réel</h2>
-        <input type="text" id="searchInput" placeholder="Entrez une ville..." onkeyup="searchCity()" onkeydown="if(event.key === 'Enter') meteo()">
+        <input type="text" id="searchInput" placeholder="Entrez une ville..." onkeyup=" if(event.key != 'Enter') searchCity()" onkeydown="if(event.key === 'Enter') meteo()">
         <ul id="suggestionsList"></ul>
         <button onclick="meteo()">Rechercher</button>
         <div class="weather-info" id="weatherResult"></div>

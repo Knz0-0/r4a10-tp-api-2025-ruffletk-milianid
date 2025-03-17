@@ -44,6 +44,9 @@ async function meteo() {
 
         document.getElementById("suggestionsList").innerHTML = '';
 
+        setBackground(weatherCode);
+
+
     } catch (error) {
         console.error("Erreur :", error);
         document.getElementById("weatherResult").innerHTML = "❌ Erreur lors de la récupération des données.";
@@ -82,6 +85,26 @@ function getWeatherIcon(code) {
     };
     return icons[code] || "fa-solid fa-question-circle"; // Icône par défaut si inconnu
 }
+
+function setBackground(code) {
+    if (code == 0) {
+        document.body.style.backgroundImage = "url('images/sun.jpg')";
+    } else if (code <= 3 ) {
+        document.body.style.backgroundImage = "url('images/cloud.jpeg')";
+    } else if(code <= 55){
+        document.body.style.backgroundImage = "url('images/brouillard.jpg')";
+    } else if(code <= 67){
+        document.body.style.backgroundImage = "url('images/pluie.jpg')";
+    } else if(code <= 77 || code == 85 || code == 86){
+        document.body.style.backgroundImage = "url('images/neige.jpeg')";
+    } else if(code <= 81){
+        document.body.style.backgroundImage = "url('images/pluie.jpg')";
+    } else{
+        document.body.style.backgroundImage = "url('images/orage.jpg')";
+    }
+}
+
+
 
 
 let citiesData = [];

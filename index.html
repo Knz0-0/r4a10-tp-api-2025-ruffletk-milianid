@@ -1,20 +1,45 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Météo en temps réel</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <div class="container">
-        <h2>🌤 Météo en temps réel</h2>
-        <input type="text" id="searchInput" placeholder="Entrez une ville..." onkeyup=" if(event.key != 'Enter') searchCity()" onkeydown="if(event.key === 'Enter') meteo()">
-        <ul id="suggestionsList"></ul>
-        <button onclick="meteo()">Rechercher</button>
-        <div class="weather-info" id="weatherResult"></div>
-    </div>
 
-    <script src="script.js"></script>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Météo</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://kit.fontawesome.com/398f5241ae.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+  <h1>🌤 Météo en temps réel</h1>
+
+
+
+  <div class="searchbar">
+    <input type="text" id="searchInput" placeholder="Entrez une ville..." onkeyup="searchCity()"
+      onkeydown="if(event.key === 'Enter')meteo();">
+    <button onclick="meteo()"><i class="fas fa-search"></i></button>
+
+  </div>
+
+  <ul id="suggestionsList"></ul>
+
+
+  <div id="message"></div>
+
+  <div class="weather-info" id="weatherResult">
+
+
+
+  </div>
+
+
+
+
+
+
+
+  <script src="script.js"></script>
 </body>
+
 </html>

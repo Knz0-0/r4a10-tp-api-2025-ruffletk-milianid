@@ -10,26 +10,12 @@
 </head>
 
 <body>
-  <h1>Découvrez la météo dans la ville de votre choix</h1>
-
-  <div class="searchbar">
-    <input type="text" id="city" placeholder="Entrez une ville">
-
-    <button onclick="getWeather()">
-      <i class="fa-solid fa-magnifying-glass"></i>
-    </button>
-  </div>
-
-
-
-
-  <div id="result">
-
-    <i class="fa-solid fa-wind"></i>
-    <div class="temperature">10°C</div>
-
-    <div class="ville">Grenoble, France</div>
-
+  <div class="container">
+    <h2>🌤 Météo en temps réel</h2>
+    <input type="text" id="searchInput" placeholder="Entrez une ville..." onkeyup="searchCity()" onkeydown="meteo()">
+    <ul id="suggestionsList"></ul>
+    <button onclick="meteo()">Rechercher</button>
+    <div class="weather-info" id="weatherResult"></div>
   </div>
 
   <script src="script.js"></script>

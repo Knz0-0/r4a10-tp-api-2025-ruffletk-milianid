@@ -41,6 +41,22 @@ async function meteo() {
         // probleme avec currentWeather.city
 
         document.getElementById("weatherResult").innerHTML = weatherHTML;
+
+        // Appel API pour récupérer l'historique des températures sur les 7 derniers jours
+        let historicalWeatherResponse = await fetch(`https://archive-api.open-meteo.com/v1/archive?latitude=${latitude}&longitude=${longitude}&start_date=${getDate(-7)}&end_date=${getDate(0)}&daily=apparent_temperature_max&timezone=Europe/Paris`);
+        let historicalWeatherData = await historicalWeatherResponse.json();
+
+        if (historicalWeatherData && historicalWeatherData.daily) {
+            let historicalTemps = historicalWeatherData.daily.apparent_temperature_max;
+            let historicalHTML = "<h3>Historique des températures (derniers 7 jours)</h3><ul>";
+            historicalTemps.forEach((temp, index) => {
+                if (temp === null) return; // Si pas de données pour ce jour
+                historicalHTML += `<li>Jour ${index}: ${temp}°C</li>`;
+            });
+            historicalHTML += "</ul>";
+            document.getElementById("historicalWeather").innerHTML = historicalHTML;
+        }
+
         document.getElementById("suggestionsList").innerHTML = '';
 
         setBackground(weatherCode);
@@ -182,6 +198,17 @@ async function filterCities(input) {
     });
 
     return filteredCities;
+}
+
+function getDate(daysAgo) {
+    let date = new Date();
+    date.setDate(date.getDate() + daysAgo);
+    let year = date.getFullYear();
+    let month = ('0' + (date.getMonth() + 1)).slice(-2);
+    let day = ('0' + date.getDate()).slice(-2);
+
+    console.log(`${year}-${month}-${day}`);
+    return `${year}-${month}-${day}`;
 }
 
 

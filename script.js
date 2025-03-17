@@ -66,7 +66,16 @@ async function meteo() {
         console.error("Erreur :", error);
         document.getElementById("weatherResult").innerHTML = "❌ Erreur lors de la récupération des données.";
     }
+
+    hideSuggestionsList();
 }
+
+
+
+
+
+
+
 
 // Fonction pour choisir l'icône en fonction du code météo
 function getWeatherIcon(code) {
@@ -138,7 +147,11 @@ async function searchCity() {
     let suggestionsList = document.getElementById('suggestionsList');
     suggestionsList.innerHTML = '';
 
-    if (input === '') return;
+    if (input === '') {
+        hideSuggestionsList();
+
+        return;
+    }
 
     let filteredCities = await filterCities(input);
 
@@ -161,10 +174,21 @@ async function searchCity() {
         li.onclick = function () {
             document.getElementById('searchInput').value = city.city;
             suggestionsList.innerHTML = '';
+            meteo();
         };
         suggestionsList.appendChild(li);
     });
+
+    console.log(uniqueCities.length);
+
+    if (uniqueCities.length > 0) {
+        showSuggestionsList();
+    } else {
+        hideSuggestionsList();
+    }
 }
+
+
 
 
 async function filterCities(input) {
@@ -187,3 +211,17 @@ function getDate(daysAgo) {
     return `${year}-${month}-${day}`;
 }
 
+
+
+
+function hideSuggestionsList() {
+    let suggestionsList = document.getElementById('suggestionsList');
+    suggestionsList.style.display = "none";
+
+}
+
+function showSuggestionsList() {
+    let suggestionsList = document.getElementById('suggestionsList');
+    suggestionsList.style.display = "block";
+
+}

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
 
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,21 +16,25 @@
 
 
 
-  <div class="searchbar">
-    <input type="text" id="searchInput" placeholder="Entrez une ville..." onkeyup="searchCity()"
-      onkeydown="if(event.key === 'Enter')meteo();">
-    <button onclick="meteo()"><i class="fas fa-search"></i></button>
+  <div class="searchZone">
+    <div class="searchbar">
+      <input type="text" id="searchInput" placeholder="Entrez une ville..." onkeyup="searchCity()"
+        onkeydown="if(event.key === 'Enter')meteo();">
+      <button onclick="meteo()"><i class="fas fa-search"></i></button>
 
+    </div>
+    <ul id="suggestionsList" style="display: none;"></ul>
   </div>
 
-  <ul id="suggestionsList"></ul>
+
+
+
 
 
   <div id="message"></div>
 
 
   <div class="weather-info" id="weatherResult">
-
 
 
   </div>

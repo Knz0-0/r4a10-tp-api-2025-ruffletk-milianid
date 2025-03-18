@@ -1,4 +1,7 @@
 async function meteo() {
+
+    hideSuggestionsList();
+
     let city = document.getElementById("searchInput").value;
     if (!city) {
         alert("Veuillez entrer une ville !");
@@ -38,7 +41,7 @@ async function meteo() {
 
         `;
 
-        // probleme avec currentWeather.city
+        
 
         document.getElementById("weatherResult").innerHTML = weatherHTML;
 
@@ -67,7 +70,7 @@ async function meteo() {
         document.getElementById("weatherResult").innerHTML = "❌ Erreur lors de la récupération des données.";
     }
 
-    hideSuggestionsList();
+    
 }
 
 
@@ -114,13 +117,13 @@ function setBackground(code) {
     if (code == 0) {
         document.body.style.backgroundImage = "url('images/sun.jpg')";
     } else if (code <= 3 ) {
-        document.body.style.backgroundImage = "url('images/cloud.jpeg')";
+        document.body.style.backgroundImage = "url('images/cloud.jpg')";
     } else if(code <= 55){
         document.body.style.backgroundImage = "url('images/brouillard.jpg')";
     } else if(code <= 67){
         document.body.style.backgroundImage = "url('images/pluie.jpg')";
-    } else if(code <= 77 || code == 85 || code == 86){
-        document.body.style.backgroundImage = "url('images/neige.jpeg')";
+    } else if ((code >= 71 && code <= 77) || code == 85 || code == 86){
+        document.body.style.backgroundImage = "url('images/neige.jpg')";
     } else if(code <= 81){
         document.body.style.backgroundImage = "url('images/pluie.jpg')";
     } else{
@@ -217,8 +220,9 @@ function getDate(daysAgo) {
 function hideSuggestionsList() {
     let suggestionsList = document.getElementById('suggestionsList');
     suggestionsList.style.display = "none";
-
+    suggestionsList.innerHTML = ''; // Vider la liste pour éviter les bugs visuels
 }
+
 
 function showSuggestionsList() {
     let suggestionsList = document.getElementById('suggestionsList');

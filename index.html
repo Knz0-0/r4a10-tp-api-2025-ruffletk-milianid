@@ -19,7 +19,7 @@
   <div class="searchZone">
     <div class="searchbar">
       <input type="text" id="searchInput" placeholder="Entrez une ville..." onkeyup="searchCity()"
-        onkeydown="if(event.key === 'Enter')meteo();">
+        onkeydown="if(event.key === 'Enter'){meteo(); blur();}">
       <button onclick="meteo()"><i class="fas fa-search"></i></button>
 
     </div>

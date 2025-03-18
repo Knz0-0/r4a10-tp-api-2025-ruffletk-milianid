@@ -20,6 +20,8 @@ body {
   display: flex;
   flex-direction: column;
 
+  transition: background-image 1s ease-in-out;
+
 }
 
 
@@ -109,6 +111,7 @@ body {
 h1 {
   font-size: 50px;
   color: aliceblue;
+  text-shadow: #070f2b 0px 0px 16px;
 }
 
 #weatherResult {
@@ -121,9 +124,9 @@ h1 {
   align-self: center;
   width: 300px;
   height: 350px;
-  border: solid #dcdbfc 4px;
+  border: solid aliceblue 4px;
   border-radius: 21px;
-  background-color: #dcdfec2a;
+  background-color: #0000002a;
   backdrop-filter: blur(7px);
   margin-top: 20px;
   font-size: 18px;

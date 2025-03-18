@@ -1,5 +1,4 @@
 async function meteo() {
-
     hideSuggestionsList();
 
     let city = document.getElementById("searchInput").value;
@@ -13,7 +12,6 @@ async function meteo() {
         let geoData = await geoResponse.json();
 
         if (!geoData.results) {
-
             document.getElementById("message").innerHTML = "❌ Ville non trouvée !";
             return;
         }
@@ -22,6 +20,7 @@ async function meteo() {
         let longitude = geoData.results[0].longitude;
         let cityName = geoData.results[0].name;
 
+        // 🔹 Récupérer la météo actuelle
         let weatherResponse = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true&timezone=Europe/Paris`);
         let weatherData = await weatherResponse.json();
 
@@ -30,48 +29,44 @@ async function meteo() {
         let icon = getWeatherIcon(weatherCode);
 
         let weatherHTML = `
-
-
             <i id="icon" class="${icon}"></i>
-
             <div id="temperature">${currentWeather.temperature}°C</div>
-
             <div id="ville">${cityName}</div>
-
-
         `;
-
-        
-
         document.getElementById("weatherResult").innerHTML = weatherHTML;
 
-        // Appel API pour récupérer l'historique des températures sur les 7 derniers jours
-        let historicalWeatherResponse = await fetch(`https://archive-api.open-meteo.com/v1/archive?latitude=${latitude}&longitude=${longitude}&start_date=${getDate(-7)}&end_date=${getDate(0)}&daily=apparent_temperature_max&timezone=Europe/Paris`);
-        let historicalWeatherData = await historicalWeatherResponse.json();
+        // 🔹 Récupérer les prévisions pour 7 jours
+        let forecastResponse = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=temperature_2m_max,weathercode&timezone=Europe/Paris`);
+        let forecastData = await forecastResponse.json();
 
-        if (historicalWeatherData && historicalWeatherData.daily) {
-            let historicalTemps = historicalWeatherData.daily.apparent_temperature_max;
-            let historicalHTML = "<h3>Historique des températures (derniers 7 jours)</h3><ul>";
-            historicalTemps.forEach((temp, index) => {
-                if (temp === null) return; // Si pas de données pour ce jour
-                historicalHTML += `<li>Jour ${index}: ${temp}°C</li>`;
-            });
-            historicalHTML += "</ul>";
-            document.getElementById("historicalWeather").innerHTML = historicalHTML;
+        let forecastHTML = `<h3>Prévisions sur 7 jours</h3><div class="forecast-container">`;
+
+        for (let i = 0; i < 7; i++) {
+            let temp = forecastData.daily.temperature_2m_max[i];
+            let dayCode = forecastData.daily.weathercode[i];
+            let dayIcon = getWeatherIcon(dayCode);
+
+            forecastHTML += `
+                <div class="forecast-box">
+                    <div class="forecast-day">J+${i + 1}</div>
+                    <i class="${dayIcon}"></i>
+                    <div class="forecast-temp">${temp}°C</div>
+                </div>
+            `;
         }
 
+        forecastHTML += `</div>`;
+        document.getElementById("weatherForecast").innerHTML = forecastHTML;
+
         document.getElementById("suggestionsList").innerHTML = '';
-
         setBackground(weatherCode);
-
 
     } catch (error) {
         console.error("Erreur :", error);
         document.getElementById("weatherResult").innerHTML = "❌ Erreur lors de la récupération des données.";
     }
-
-    
 }
+
 
 
 

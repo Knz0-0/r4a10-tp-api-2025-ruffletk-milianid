@@ -8,7 +8,7 @@
 
 body {
 
-  background-image: url("images/bg.png");
+  background-image: url("images/default.jpg");
   background-size: cover;
   background-repeat: no-repeat;
 
@@ -44,7 +44,7 @@ body {
 }
 
 .fa-search:hover {
-  background-color: #dcdbfc;
+  background-color: rgb(210, 222, 231);
 }
 
 .searchbar {
@@ -79,7 +79,7 @@ body {
 }
 
 #suggestionsList li:hover {
-  background-color: #dcdbfc;
+  background-color: rgb(210, 222, 231);
   cursor: pointer;
 }
 
@@ -114,6 +114,12 @@ h1 {
   text-shadow: #070f2b 0px 0px 16px;
 }
 
+h3{
+  font-size: 25px;
+  color: aliceblue;
+  text-shadow: #070f2b 0px 0px 16px;
+}
+
 #weatherResult {
 
   display: flex;
@@ -126,7 +132,7 @@ h1 {
   height: 350px;
   border: solid aliceblue 4px;
   border-radius: 21px;
-  background-color: #0000002a;
+  background-color: #00000060;
   backdrop-filter: blur(7px);
   margin-top: 20px;
   font-size: 18px;
@@ -147,4 +153,31 @@ h1 {
 #message {
   color: aliceblue;
   font-size: large;
+}
+
+
+.forecast-container {
+  color: aliceblue;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+.forecast-box {
+  background: #00000060;
+  backdrop-filter: blur(7px);
+
+  padding: 10px;
+  border-radius: 8px;
+  text-align: center;
+  min-width: 80px;
+}
+
+.forecast-day {
+  font-weight: bold;
+}
+
+.forecast-temp {
+  font-size: 1.2em;
 }

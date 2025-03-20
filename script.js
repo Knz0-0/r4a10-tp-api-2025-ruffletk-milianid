@@ -60,7 +60,7 @@ async function meteo() {
         document.getElementById("suggestionsList").innerHTML = '';
         setBackground(weatherCode);
 
-        refreshButtonPos();
+        refreshFavBouton();
 
     } catch (error) {
         console.error("Erreur :", error);
@@ -284,8 +284,10 @@ function toggleFavorite() {
 }
 
 
-function refreshButtonPos() {
+function refreshFavBouton() {
     let favButton = document.getElementById('favButton');
+    let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+    let cityName = document.getElementById("ville")?.textContent;
 
 
     let coordBox = document.getElementById('weatherResult').getBoundingClientRect();
@@ -294,6 +296,17 @@ function refreshButtonPos() {
     favButton.style.zIndex = 10;
 
     favButton.style.display = "block";
+
+    if (favorites.includes(cityName)) {
+        favButton.classList.remove("fa-regular"); 
+        favButton.classList.add("fa-solid");
+    } else {
+        favButton.classList.add("fa-regular");
+        favButton.classList.remove("fa-solid"); // Icône pleine
+    }
+
+    console.log("Position du bouton actualisée !");
+    
 }
 
 
@@ -302,6 +315,6 @@ window.addEventListener("resize", () => {
     clearTimeout(resizeTimeout); // Annule le timeout précédent
     resizeTimeout = setTimeout(() => {
         console.log("Fenêtre redimensionnée ! Nouvelle taille :", window.innerWidth, "x", window.innerHeight);
-        refreshButtonPos();
+        refreshFavBouton();
     }, 200); // Délai en ms avant d'exécuter le code après le dernier resize
 });

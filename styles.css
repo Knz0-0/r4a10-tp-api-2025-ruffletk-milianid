@@ -114,14 +114,14 @@ h1 {
   text-shadow: #070f2b 0px 0px 16px;
 }
 
-h3{
+h3 {
   font-size: 25px;
   color: aliceblue;
   text-shadow: #070f2b 0px 0px 16px;
 }
 
 #weatherResult {
-
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -138,8 +138,20 @@ h3{
   font-size: 18px;
 }
 
-#weatherResult #icon {
+#weatherResult>#icon {
   font-size: 30px;
+}
+
+#favButton {
+  background-color: transparent;
+  border: none;
+  width: fit-content;
+  height: fit-content;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  font-size: large;
+  color: aliceblue;
 }
 
 #weatherResult #temperature {

@@ -65,6 +65,10 @@ async function meteo() {
         console.error("Erreur :", error);
         document.getElementById("weatherResult").innerHTML = "❌ Erreur lors de la récupération des données.";
     }
+
+    let favButton = document.getElementById('favButton');
+    favButton.style.display = "block";
+
 }
 
 
@@ -111,20 +115,21 @@ function getWeatherIcon(code) {
 function setBackground(code) {
     if (code == 0) {
         document.body.style.backgroundImage = "url('images/sun.jpg')";
-    } else if (code <= 3 ) {
+    } else if (code <= 3) {
         document.body.style.backgroundImage = "url('images/cloud.jpg')";
-    } else if(code <= 55){
+    } else if (code <= 55) {
         document.body.style.backgroundImage = "url('images/brouillard.jpg')";
-    } else if(code <= 67){
+    } else if (code <= 67) {
         document.body.style.backgroundImage = "url('images/pluie.jpg')";
-    } else if ((code >= 71 && code <= 77) || code == 85 || code == 86){
+    } else if ((code >= 71 && code <= 77) || code == 85 || code == 86) {
         document.body.style.backgroundImage = "url('images/neige.jpg')";
-    } else if(code <= 81){
+    } else if (code <= 81) {
         document.body.style.backgroundImage = "url('images/pluie.jpg')";
-    } else{
+    } else {
         document.body.style.backgroundImage = "url('images/orage.jpg')";
     }
 }
+
 
 
 
@@ -139,6 +144,10 @@ fetch('cities5000.json')
     .catch(error => {
         console.error("Erreur lors du chargement du fichier JSON :", error);
     });
+
+
+
+
 
 async function searchCity() {
     let input = document.getElementById('searchInput').value.toLowerCase();
@@ -224,3 +233,51 @@ function showSuggestionsList() {
     suggestionsList.style.display = "block";
 
 }
+
+
+function toggleFavorite() {
+    let favButton = document.getElementById("favButton");
+    let cityName = document.getElementById("ville")?.textContent;
+
+    if (!cityName) return; // Si aucune ville affichée, on ne fait rien
+
+    let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+
+    if (favorites.includes(cityName)) {
+        // 🔴 Retirer la ville des favoris
+        favorites = favorites.filter(city => city !== cityName);
+        favButton.classList.remove("fa-solid");
+        favButton.classList.add("fa-regular"); // Icône vide
+    } else {
+        // ✅ Ajouter la ville aux favoris
+        favorites.push(cityName);
+        favButton.classList.remove("fa-regular");
+        favButton.classList.add("fa-solid"); // Icône pleine
+    }
+
+    localStorage.setItem("favorites", JSON.stringify(favorites)); // Sauvegarde des favoris
+}
+
+
+
+function refreshButtonPos() {
+    let favButton = document.getElementById('favButton');
+
+
+    let coordBox = document.getElementById('weatherResult').getBoundingClientRect();
+    favButton.style.top = coordBox.top + 10 + 'px';
+    favButton.style.right = coordBox.left + 10 + 'px';
+    favButton.style.zIndex = 10;
+}
+
+refreshButtonPos();
+
+
+let resizeTimeout;
+window.addEventListener("resize", () => {
+    clearTimeout(resizeTimeout); // Annule le timeout précédent
+    resizeTimeout = setTimeout(() => {
+        console.log("Fenêtre redimensionnée ! Nouvelle taille :", window.innerWidth, "x", window.innerHeight);
+        refreshButtonPos();
+    }, 200); // Délai en ms avant d'exécuter le code après le dernier resize
+});

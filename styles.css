@@ -7,22 +7,30 @@
 }
 
 body {
-
   background-image: url("images/default.jpg");
   background-size: cover;
   background-repeat: no-repeat;
+  background-position: center center;
+  /* Centrage propre */
+  background-attachment: fixed;
+  /* Empêche le scroll de modifier la position */
 
   background-color: #070f2b;
   font-family: Arial, sans-serif;
   text-align: center;
-  margin: 50px;
+  margin: 0;
+  /* Enlève les marges inutiles qui peuvent perturber */
+  padding: 0;
+  /* Enlève le padding aussi */
 
+  min-height: 100vh;
+  /* Empêche que la page soit trop petite */
   display: flex;
   flex-direction: column;
 
   transition: background-image 1s ease-in-out;
-
 }
+
 
 
 .searchZone {
@@ -196,8 +204,7 @@ h3 {
 
 #favoritesSection {
   position: absolute;
-  right: 0;
-  /*mettre collé a droite de l'ecran*/
+  right: 20px;
 
   margin-top: 20px;
   padding: 10px;

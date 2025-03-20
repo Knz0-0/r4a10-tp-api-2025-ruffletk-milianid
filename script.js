@@ -67,9 +67,6 @@ async function meteo() {
         document.getElementById("weatherResult").innerHTML = "❌ Erreur lors de la récupération des données.";
     }
 
-    let favButton = document.getElementById('favButton');
-    favButton.style.display = "block";
-
 }
 
 
@@ -264,7 +261,6 @@ function displayFavorites() {
 
 document.addEventListener('DOMContentLoaded', function () {
     console.log("Page chargée, appel de displayFavorites()");
-    refreshButtonPos();
     displayFavorites();
 });
 
@@ -314,6 +310,8 @@ function refreshButtonPos() {
     favButton.style.top = coordBox.top + 10 + 'px';
     favButton.style.right = coordBox.left + 10 + 'px';
     favButton.style.zIndex = 10;
+
+    favButton.style.display = "block";
 }
 
 

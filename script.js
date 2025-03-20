@@ -1,13 +1,22 @@
+/* Variables globales */
+let searchInput = document.getElementById("searchInput");
+let suggestionsList = document.getElementById("suggestionsList");
+let favoritesList = document.getElementById("favoritesList");
+let citiesData = [];
+let currentSuggestionIndex = -1;
+
+/* Fonction principale : récupération de la météo */
 async function meteo() {
     hideSuggestionsList();
 
-    let city = document.getElementById("searchInput").value;
+    let city = searchInput.value;
     if (!city) {
         alert("Veuillez entrer une ville !");
         return;
     }
 
     try {
+        // Récupérer la géolocalisation
         let geoResponse = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${city}&count=1&language=fr&format=json`);
         let geoData = await geoResponse.json();
 
@@ -20,26 +29,25 @@ async function meteo() {
         let longitude = geoData.results[0].longitude;
         let cityName = geoData.results[0].name;
 
-        // 🔹 Récupérer la météo actuelle
+        // Récupérer la météo actuelle
         let weatherResponse = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true&timezone=Europe/Paris`);
         let weatherData = await weatherResponse.json();
-
         let currentWeather = weatherData.current_weather;
         let weatherCode = currentWeather.weathercode;
         let icon = getWeatherIcon(weatherCode);
 
         let weatherHTML = `
-        <i id="icon" class="${icon}"></i>
-        <div id="temperature">${currentWeather.temperature}°C</div>
-        <div id="ville">${cityName}</div>`;
+            <i id="icon" class="${icon}"></i>
+            <div id="temperature">${currentWeather.temperature}°C</div>
+            <div id="ville">${cityName}</div>
+        `;
         document.getElementById("weatherResult").innerHTML = weatherHTML;
 
-        // 🔹 Récupérer les prévisions pour 7 jours
+        // Récupérer les prévisions sur 7 jours
         let forecastResponse = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=temperature_2m_max,weathercode&timezone=Europe/Paris`);
         let forecastData = await forecastResponse.json();
 
         let forecastHTML = `<h3>Prévisions sur 7 jours</h3><div class="forecast-container">`;
-
         for (let i = 0; i < 7; i++) {
             let temp = forecastData.daily.temperature_2m_max[i];
             let dayCode = forecastData.daily.weathercode[i];
@@ -53,56 +61,54 @@ async function meteo() {
                 </div>
             `;
         }
-
         forecastHTML += `</div>`;
         document.getElementById("weatherForecast").innerHTML = forecastHTML;
 
-        document.getElementById("suggestionsList").innerHTML = '';
+        // Réinitialiser et masquer la liste de suggestions
+        suggestionsList.innerHTML = '';
         setBackground(weatherCode);
-
         refreshFavBouton();
 
     } catch (error) {
         console.error("Erreur :", error);
         document.getElementById("weatherResult").innerHTML = "❌ Erreur lors de la récupération des données.";
     }
-
 }
 
-
-// Fonction pour choisir l'icône en fonction du code météo
+/* Choix de l'icône en fonction du code météo */
 function getWeatherIcon(code) {
-    let icons = {
-        0: "fa-solid fa-sun", // Soleil
-        1: "fa-solid fa-cloud-sun", // Légèrement nuageux
-        2: "fa-solid fa-cloud-sun", // Partiellement nuageux
-        3: "fa-solid fa-cloud", // Nuageux
-        45: "fa-solid fa-smog", // Brouillard
-        48: "fa-solid fa-smog", // Brouillard givrant
-        51: "fa-solid fa-cloud-rain", // Bruine légère
-        53: "fa-solid fa-cloud-showers-heavy", // Bruine modérée
-        55: "fa-solid fa-cloud-showers-heavy", // Bruine dense
-        61: "fa-solid fa-cloud-rain", // Pluie légère
-        63: "fa-solid fa-cloud-showers-heavy", // Pluie modérée
-        65: "fa-solid fa-cloud-showers-heavy", // Pluie forte
-        66: "fa-solid fa-snowflake", // Pluie verglaçante légère
-        67: "fa-solid fa-snowflake", // Pluie verglaçante forte
-        71: "fa-solid fa-snowflake", // Neige légère
-        73: "fa-solid fa-snowflake", // Neige modérée
-        75: "fa-solid fa-snowman", // Neige forte
-        77: "fa-solid fa-snowflake", // Grains de neige
-        80: "fa-solid fa-cloud-rain", // Averses légères
-        81: "fa-solid fa-cloud-showers-heavy", // Averses modérées
-        82: "fa-solid fa-bolt", // Averses fortes (orageuses)
-        85: "fa-solid fa-snowflake", // Averses de neige légères
-        86: "fa-solid fa-snowflake", // Averses de neige fortes
-        95: "fa-solid fa-bolt", // Orage
-        96: "fa-solid fa-cloud-bolt", // Orage avec grêle légère
-        99: "fa-solid fa-cloud-bolt", // Orage avec grêle forte
+    const icons = {
+        0: "fa-solid fa-sun",
+        1: "fa-solid fa-cloud-sun",
+        2: "fa-solid fa-cloud-sun",
+        3: "fa-solid fa-cloud",
+        45: "fa-solid fa-smog",
+        48: "fa-solid fa-smog",
+        51: "fa-solid fa-cloud-rain",
+        53: "fa-solid fa-cloud-showers-heavy",
+        55: "fa-solid fa-cloud-showers-heavy",
+        61: "fa-solid fa-cloud-rain",
+        63: "fa-solid fa-cloud-showers-heavy",
+        65: "fa-solid fa-cloud-showers-heavy",
+        66: "fa-solid fa-snowflake",
+        67: "fa-solid fa-snowflake",
+        71: "fa-solid fa-snowflake",
+        73: "fa-solid fa-snowflake",
+        75: "fa-solid fa-snowman",
+        77: "fa-solid fa-snowflake",
+        80: "fa-solid fa-cloud-rain",
+        81: "fa-solid fa-cloud-showers-heavy",
+        82: "fa-solid fa-bolt",
+        85: "fa-solid fa-snowflake",
+        86: "fa-solid fa-snowflake",
+        95: "fa-solid fa-bolt",
+        96: "fa-solid fa-cloud-bolt",
+        99: "fa-solid fa-cloud-bolt",
     };
-    return icons[code] || "fa-solid fa-question-circle"; // Icône par défaut si inconnu
+    return icons[code] || "fa-solid fa-question-circle";
 }
 
+/* Modifier le fond en fonction du code météo */
 function setBackground(code) {
     if (code == 0) {
         document.body.style.backgroundImage = "url('images/sun.jpg')";
@@ -121,9 +127,7 @@ function setBackground(code) {
     }
 }
 
-
-let citiesData = [];
-
+/* Chargement des données de villes */
 fetch('cities5000.json')
     .then(response => response.json())
     .then(data => {
@@ -133,15 +137,13 @@ fetch('cities5000.json')
         console.error("Erreur lors du chargement du fichier JSON :", error);
     });
 
-
+/* Recherche de villes */
 async function searchCity() {
-    let input = document.getElementById('searchInput').value.toLowerCase();
-    let suggestionsList = document.getElementById('suggestionsList');
+    let input = searchInput.value.toLowerCase();
     suggestionsList.innerHTML = '';
 
     if (input === '') {
         hideSuggestionsList();
-
         return;
     }
 
@@ -149,7 +151,6 @@ async function searchCity() {
 
     let uniqueCities = [];
     let seenCities = new Set();
-
     filteredCities.forEach(city => {
         let cityKey = `${city.city}, ${city.country}`.toLowerCase();
         if (!seenCities.has(cityKey)) {
@@ -157,21 +158,18 @@ async function searchCity() {
             uniqueCities.push(city);
         }
     });
-
     uniqueCities = uniqueCities.slice(0, 5);
 
     uniqueCities.forEach(city => {
         let li = document.createElement('li');
         li.textContent = `${city.city}, ${city.country}`;
         li.onclick = function () {
-            document.getElementById('searchInput').value = city.city;
+            searchInput.value = city.city;
             suggestionsList.innerHTML = '';
             meteo();
         };
         suggestionsList.appendChild(li);
     });
-
-    console.log(uniqueCities.length);
 
     if (uniqueCities.length > 0) {
         showSuggestionsList();
@@ -180,46 +178,35 @@ async function searchCity() {
     }
 }
 
-
+/* Filtrer les villes */
 async function filterCities(input) {
-
-    let filteredCities = citiesData.filter(city => {
-        return city.city.toLowerCase().includes(input);
-    });
-
-    return filteredCities;
+    return citiesData.filter(city => city.city.toLowerCase().includes(input));
 }
 
-
+/* Utilitaire : obtenir la date */
 function getDate(daysAgo) {
     let date = new Date();
     date.setDate(date.getDate() + daysAgo);
     let year = date.getFullYear();
     let month = ('0' + (date.getMonth() + 1)).slice(-2);
     let day = ('0' + date.getDate()).slice(-2);
-
-    console.log(`${year}-${month}-${day}`);
     return `${year}-${month}-${day}`;
 }
 
-
+/* Masquer la liste des suggestions */
 function hideSuggestionsList() {
-    let suggestionsList = document.getElementById('suggestionsList');
     suggestionsList.style.display = "none";
-    suggestionsList.innerHTML = ''; // Vider la liste pour éviter les bugs visuels
+    suggestionsList.innerHTML = '';
 }
 
-
+/* Afficher la liste des suggestions */
 function showSuggestionsList() {
-    let suggestionsList = document.getElementById('suggestionsList');
     suggestionsList.style.display = "block";
-
 }
 
-
+/* Afficher les favoris */
 function displayFavorites() {
     let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
-    let favoritesList = document.getElementById('favoritesList');
     favoritesList.innerHTML = '';
 
     if (favorites.length === 0) {
@@ -230,91 +217,66 @@ function displayFavorites() {
     favorites.forEach(city => {
         let li = document.createElement('li');
         li.textContent = city;
-
-        // Ajouter un événement pour écrire dans le champ et lancer la recherche
         li.onclick = function () {
-            document.getElementById('searchInput').value = city; // Écrire dans le champ
-            meteo(); // Lancer la recherche
+            searchInput.value = city;
+            meteo();
         };
-
         favoritesList.appendChild(li);
     });
 }
 
-
-document.addEventListener('DOMContentLoaded', function () {
-    console.log("Page chargée, appel de displayFavorites()");
-    displayFavorites();
-});
-
-
-let li = document.createElement('li');
-
-li.onclick = function () {
-    document.getElementById('searchInput').value = city.city;
-    suggestionsList.innerHTML = '';
-    meteo();
-    addToFavorites(city.city); // Ajouter la ville aux favoris
-};
-
-
+/* Gestion du bouton favori */
 function toggleFavorite() {
     let favButton = document.getElementById("favButton");
     let cityName = document.getElementById("ville")?.textContent;
-
-    if (!cityName) return; // Si aucune ville affichée, on ne fait rien
+    if (!cityName) return;
 
     let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
-
     if (favorites.includes(cityName)) {
-        // 🔴 Retirer la ville des favoris
         favorites = favorites.filter(city => city !== cityName);
         favButton.classList.remove("fa-solid");
-        favButton.classList.add("fa-regular"); // Icône vide
+        favButton.classList.add("fa-regular");
     } else {
-        // ✅ Ajouter la ville aux favoris
         favorites.push(cityName);
         favButton.classList.remove("fa-regular");
-        favButton.classList.add("fa-solid"); // Icône pleine
+        favButton.classList.add("fa-solid");
     }
-
-    localStorage.setItem("favorites", JSON.stringify(favorites)); // Sauvegarde des favoris
-
+    localStorage.setItem("favorites", JSON.stringify(favorites));
     displayFavorites();
 }
 
-
+/* Positionnement du bouton favori */
 function refreshFavBouton() {
     let favButton = document.getElementById('favButton');
     let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
     let cityName = document.getElementById("ville")?.textContent;
 
-
     let coordBox = document.getElementById('weatherResult').getBoundingClientRect();
-    favButton.style.top = coordBox.top + 10 + 'px';
-    favButton.style.right = coordBox.left + 10 + 'px';
+    favButton.style.top = (coordBox.top + 10) + 'px';
+    favButton.style.right = (coordBox.left + 10) + 'px';
     favButton.style.zIndex = 10;
-
     favButton.style.display = "block";
 
     if (favorites.includes(cityName)) {
-        favButton.classList.remove("fa-regular"); 
+        favButton.classList.remove("fa-regular");
         favButton.classList.add("fa-solid");
     } else {
         favButton.classList.add("fa-regular");
-        favButton.classList.remove("fa-solid"); // Icône pleine
+        favButton.classList.remove("fa-solid");
     }
-
-    console.log("Position du bouton actualisée !");
-    
 }
 
-
+/* Redimensionnement de la fenêtre */
 let resizeTimeout;
 window.addEventListener("resize", () => {
-    clearTimeout(resizeTimeout); // Annule le timeout précédent
+    clearTimeout(resizeTimeout);
     resizeTimeout = setTimeout(() => {
-        console.log("Fenêtre redimensionnée ! Nouvelle taille :", window.innerWidth, "x", window.innerHeight);
         refreshFavBouton();
-    }, 200); // Délai en ms avant d'exécuter le code après le dernier resize
+    }, 200);
+});
+
+/* Appeler displayFavorites au démarrage de la page */
+document.addEventListener('DOMContentLoaded', function () {
+    console.log("Page chargée, appel de displayFavorites()");
+    displayFavorites();
 });

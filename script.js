@@ -70,13 +70,6 @@ async function meteo() {
 }
 
 
-
-
-
-
-
-
-
 // Fonction pour choisir l'icône en fonction du code météo
 function getWeatherIcon(code) {
     let icons = {
@@ -129,9 +122,6 @@ function setBackground(code) {
 }
 
 
-
-
-
 let citiesData = [];
 
 fetch('cities5000.json')
@@ -142,9 +132,6 @@ fetch('cities5000.json')
     .catch(error => {
         console.error("Erreur lors du chargement du fichier JSON :", error);
     });
-
-
-
 
 
 async function searchCity() {
@@ -194,8 +181,6 @@ async function searchCity() {
 }
 
 
-
-
 async function filterCities(input) {
 
     let filteredCities = citiesData.filter(city => {
@@ -204,6 +189,7 @@ async function filterCities(input) {
 
     return filteredCities;
 }
+
 
 function getDate(daysAgo) {
     let date = new Date();
@@ -215,8 +201,6 @@ function getDate(daysAgo) {
     console.log(`${year}-${month}-${day}`);
     return `${year}-${month}-${day}`;
 }
-
-
 
 
 function hideSuggestionsList() {
@@ -231,7 +215,6 @@ function showSuggestionsList() {
     suggestionsList.style.display = "block";
 
 }
-
 
 
 function displayFavorites() {
@@ -299,7 +282,6 @@ function toggleFavorite() {
 
     displayFavorites();
 }
-
 
 
 function refreshButtonPos() {

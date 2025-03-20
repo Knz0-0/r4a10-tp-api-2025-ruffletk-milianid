@@ -67,6 +67,8 @@ async function meteo() {
         document.getElementById("suggestionsList").innerHTML = '';
         setBackground(weatherCode);
 
+        refreshButtonPos();
+
     } catch (error) {
         console.error("Erreur :", error);
         document.getElementById("weatherResult").innerHTML = "❌ Erreur lors de la récupération des données.";
@@ -242,22 +244,6 @@ function showSuggestionsList() {
 
 
 
-
-
-
-// Ajouter une ville aux favoris
-function addToFavorites(city) {
-    let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
-    if (!favorites.includes(city)) {
-        favorites.push(city);
-        localStorage.setItem('favorites', JSON.stringify(favorites));
-        alert(`${city} a été ajouté(e) à vos favoris !`);
-        displayFavorites();
-    } else {
-        alert(`${city} est déjà dans vos favoris.`);
-    }
-}
-
 function displayFavorites() {
     let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
     let favoritesList = document.getElementById('favoritesList');
@@ -278,25 +264,17 @@ function displayFavorites() {
             meteo(); // Lancer la recherche
         };
 
-        let removeButton = document.createElement('button');
-        removeButton.textContent = '❌';
-        removeButton.onclick = function (event) {
-            event.stopPropagation(); // Empêcher le clic sur le favori de lancer la recherche
-            removeFromFavorites(city);
-        };
-
-        li.appendChild(removeButton);
         favoritesList.appendChild(li);
     });
 }
-// Supprimer une ville des favoris
-function removeFromFavorites(city) {
-    let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
-    favorites = favorites.filter(fav => fav !== city);
-    localStorage.setItem('favorites', JSON.stringify(favorites));
-    alert(`${city} a été supprimé(e) de vos favoris.`);
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    console.log("Page chargée, appel de displayFavorites()");
+    refreshButtonPos();
     displayFavorites();
-}
+});
+
 
 let li = document.createElement('li');
 
@@ -306,11 +284,6 @@ li.onclick = function () {
     meteo();
     addToFavorites(city.city); // Ajouter la ville aux favoris
 };
-
-document.addEventListener('DOMContentLoaded', function () {
-    console.log("Page chargée, appel de displayFavorites()");
-    displayFavorites();
-});
 
 
 function toggleFavorite() {
@@ -334,6 +307,8 @@ function toggleFavorite() {
     }
 
     localStorage.setItem("favorites", JSON.stringify(favorites)); // Sauvegarde des favoris
+
+    displayFavorites();
 }
 
 
@@ -347,8 +322,6 @@ function refreshButtonPos() {
     favButton.style.right = coordBox.left + 10 + 'px';
     favButton.style.zIndex = 10;
 }
-
-refreshButtonPos();
 
 
 let resizeTimeout;

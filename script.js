@@ -315,8 +315,6 @@ function toggleFavorite() {
 
 function refreshButtonPos() {
     let favButton = document.getElementById('favButton');
-
-
     let coordBox = document.getElementById('weatherResult').getBoundingClientRect();
     favButton.style.top = coordBox.top + 10 + 'px';
     favButton.style.right = coordBox.left + 10 + 'px';
@@ -330,5 +328,5 @@ window.addEventListener("resize", () => {
     resizeTimeout = setTimeout(() => {
         console.log("Fenêtre redimensionnée ! Nouvelle taille :", window.innerWidth, "x", window.innerHeight);
         refreshButtonPos();
-    }, 200); // Délai en ms avant d'exécuter le code après le dernier resize
+    }, 10); // Délai en ms avant d'exécuter le code après le dernier resize
 });

@@ -34,8 +34,6 @@ async function meteo() {
         <div id="ville">${cityName}</div>`;
         document.getElementById("weatherResult").innerHTML = weatherHTML;
 
-        document.getElementById("weatherResult").innerHTML = weatherHTML;
-
         // 🔹 Récupérer les prévisions pour 7 jours
         let forecastResponse = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=temperature_2m_max,weathercode&timezone=Europe/Paris`);
         let forecastData = await forecastResponse.json();

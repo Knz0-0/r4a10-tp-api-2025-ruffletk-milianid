@@ -199,6 +199,10 @@ h3 {
 
 
 #favoritesSection {
+  position: absolute;
+  right: 0;
+  /*mettre collé a droite de l'ecran*/
+
   margin-top: 20px;
   padding: 10px;
   background-color: aliceblue;

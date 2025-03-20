@@ -31,14 +31,7 @@ async function meteo() {
         let weatherHTML = `
         <i id="icon" class="${icon}"></i>
         <div id="temperature">${currentWeather.temperature}°C</div>
-        <div id="ville">${cityName}</div>
-        <button id="addToFavoritesButton">⭐ Ajouter aux favoris</button>`;
-        document.getElementById("weatherResult").innerHTML = weatherHTML;
-
-        // Ajouter un événement au bouton pour ajouter aux favoris
-        document.getElementById("addToFavoritesButton").onclick = function () {
-            addToFavorites(cityName);
-        };
+        <div id="ville">${cityName}</div>`;
         document.getElementById("weatherResult").innerHTML = weatherHTML;
 
         // 🔹 Récupérer les prévisions pour 7 jours
@@ -74,17 +67,7 @@ async function meteo() {
         document.getElementById("weatherResult").innerHTML = "❌ Erreur lors de la récupération des données.";
     }
 
-    let favButton = document.getElementById('favButton');
-    favButton.style.display = "block";
-
 }
-
-
-
-
-
-
-
 
 
 // Fonction pour choisir l'icône en fonction du code météo
@@ -139,9 +122,6 @@ function setBackground(code) {
 }
 
 
-
-
-
 let citiesData = [];
 
 fetch('cities5000.json')
@@ -152,9 +132,6 @@ fetch('cities5000.json')
     .catch(error => {
         console.error("Erreur lors du chargement du fichier JSON :", error);
     });
-
-
-
 
 
 async function searchCity() {
@@ -204,8 +181,6 @@ async function searchCity() {
 }
 
 
-
-
 async function filterCities(input) {
 
     let filteredCities = citiesData.filter(city => {
@@ -214,6 +189,7 @@ async function filterCities(input) {
 
     return filteredCities;
 }
+
 
 function getDate(daysAgo) {
     let date = new Date();
@@ -225,8 +201,6 @@ function getDate(daysAgo) {
     console.log(`${year}-${month}-${day}`);
     return `${year}-${month}-${day}`;
 }
-
-
 
 
 function hideSuggestionsList() {
@@ -241,7 +215,6 @@ function showSuggestionsList() {
     suggestionsList.style.display = "block";
 
 }
-
 
 
 function displayFavorites() {
@@ -271,7 +244,6 @@ function displayFavorites() {
 
 document.addEventListener('DOMContentLoaded', function () {
     console.log("Page chargée, appel de displayFavorites()");
-    refreshButtonPos();
     displayFavorites();
 });
 
@@ -312,13 +284,14 @@ function toggleFavorite() {
 }
 
 
-
 function refreshButtonPos() {
     let favButton = document.getElementById('favButton');
     let coordBox = document.getElementById('weatherResult').getBoundingClientRect();
     favButton.style.top = coordBox.top + 10 + 'px';
     favButton.style.right = coordBox.left + 10 + 'px';
     favButton.style.zIndex = 10;
+
+    favButton.style.display = "block";
 }
 
 

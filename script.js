@@ -31,14 +31,9 @@ async function meteo() {
         let weatherHTML = `
         <i id="icon" class="${icon}"></i>
         <div id="temperature">${currentWeather.temperature}°C</div>
-        <div id="ville">${cityName}</div>
-        <button id="addToFavoritesButton">⭐ Ajouter aux favoris</button>`;
+        <div id="ville">${cityName}</div>`;
         document.getElementById("weatherResult").innerHTML = weatherHTML;
 
-        // Ajouter un événement au bouton pour ajouter aux favoris
-        document.getElementById("addToFavoritesButton").onclick = function () {
-            addToFavorites(cityName);
-        };
         document.getElementById("weatherResult").innerHTML = weatherHTML;
 
         // 🔹 Récupérer les prévisions pour 7 jours

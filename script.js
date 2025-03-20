@@ -29,10 +29,16 @@ async function meteo() {
         let icon = getWeatherIcon(weatherCode);
 
         let weatherHTML = `
-            <i id="icon" class="${icon}"></i>
-            <div id="temperature">${currentWeather.temperature}°C</div>
-            <div id="ville">${cityName}</div>
-        `;
+        <i id="icon" class="${icon}"></i>
+        <div id="temperature">${currentWeather.temperature}°C</div>
+        <div id="ville">${cityName}</div>
+        <button id="addToFavoritesButton">⭐ Ajouter aux favoris</button>`;
+        document.getElementById("weatherResult").innerHTML = weatherHTML;
+
+        // Ajouter un événement au bouton pour ajouter aux favoris
+        document.getElementById("addToFavoritesButton").onclick = function () {
+            addToFavorites(cityName);
+        };
         document.getElementById("weatherResult").innerHTML = weatherHTML;
 
         // 🔹 Récupérer les prévisions pour 7 jours
@@ -224,3 +230,75 @@ function showSuggestionsList() {
     suggestionsList.style.display = "block";
 
 }
+
+
+
+
+
+
+// Ajouter une ville aux favoris
+function addToFavorites(city) {
+    let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+    if (!favorites.includes(city)) {
+        favorites.push(city);
+        localStorage.setItem('favorites', JSON.stringify(favorites));
+        alert(`${city} a été ajouté(e) à vos favoris !`);
+        displayFavorites();
+    } else {
+        alert(`${city} est déjà dans vos favoris.`);
+    }
+}
+
+function displayFavorites() {
+    let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+    let favoritesList = document.getElementById('favoritesList');
+    favoritesList.innerHTML = '';
+
+    if (favorites.length === 0) {
+        favoritesList.innerHTML = '<p>Aucun favori pour le moment.</p>';
+        return;
+    }
+
+    favorites.forEach(city => {
+        let li = document.createElement('li');
+        li.textContent = city;
+
+        // Ajouter un événement pour écrire dans le champ et lancer la recherche
+        li.onclick = function () {
+            document.getElementById('searchInput').value = city; // Écrire dans le champ
+            meteo(); // Lancer la recherche
+        };
+
+        let removeButton = document.createElement('button');
+        removeButton.textContent = '❌';
+        removeButton.onclick = function (event) {
+            event.stopPropagation(); // Empêcher le clic sur le favori de lancer la recherche
+            removeFromFavorites(city);
+        };
+
+        li.appendChild(removeButton);
+        favoritesList.appendChild(li);
+    });
+}
+// Supprimer une ville des favoris
+function removeFromFavorites(city) {
+    let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+    favorites = favorites.filter(fav => fav !== city);
+    localStorage.setItem('favorites', JSON.stringify(favorites));
+    alert(`${city} a été supprimé(e) de vos favoris.`);
+    displayFavorites();
+}
+
+let li = document.createElement('li');
+
+li.onclick = function () {
+    document.getElementById('searchInput').value = city.city;
+    suggestionsList.innerHTML = '';
+    meteo();
+    addToFavorites(city.city); // Ajouter la ville aux favoris
+};
+
+document.addEventListener('DOMContentLoaded', function () {
+    console.log("Page chargée, appel de displayFavorites()");
+    displayFavorites();
+});

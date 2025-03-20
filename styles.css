@@ -181,3 +181,38 @@ h3{
 .forecast-temp {
   font-size: 1.2em;
 }
+
+
+
+
+
+#favoritesSection {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: aliceblue;
+  border-radius: 10px;
+  width: 400px;
+  align-self: center;
+}
+
+#favoritesList {
+  list-style-type: none;
+  padding: 0;
+}
+
+#favoritesList li {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px;
+  background-color: #f0f0f0;
+  margin-bottom: 5px;
+  border-radius: 5px;
+}
+
+#favoritesList li button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  color: red;
+  font-size: 16px;
+}

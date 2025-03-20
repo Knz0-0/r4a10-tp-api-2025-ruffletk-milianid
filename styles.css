@@ -227,9 +227,13 @@ h3 {
   display: flex;
   justify-content: space-between;
   padding: 5px;
-  background-color: #f0f0f0;
   margin-bottom: 5px;
   border-radius: 5px;
+}
+
+#favoritesList li:hover {
+  background-color: rgb(210, 222, 231);
+  cursor: pointer;
 }
 
 #favoritesList li button {

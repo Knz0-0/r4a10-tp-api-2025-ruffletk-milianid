@@ -282,10 +282,3 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
-searchInput.addEventListener("blur", () => {
-    suggestionsList.style.display = 'none';
-})
-
-searchInput.addEventListener("focus", () => {
-    searchCity();
-})

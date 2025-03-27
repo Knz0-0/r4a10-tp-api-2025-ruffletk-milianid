@@ -280,3 +280,12 @@ document.addEventListener('DOMContentLoaded', function () {
     console.log("Page chargée, appel de displayFavorites()");
     displayFavorites();
 });
+
+
+searchInput.addEventListener("blur", () => {
+    suggestionsList.style.display = 'none';
+})
+
+searchInput.addEventListener("focus", () => {
+    searchCity();
+})
